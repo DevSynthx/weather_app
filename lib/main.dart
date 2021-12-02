@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:weather_app/ui/home_page.dart';
 import 'package:weather_app/utils/navigator.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
               navigatorKey: navigator.key,
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
+                scaffoldBackgroundColor: const Color(0xff8862FC),
                 fontFamily: 'DM Sans',
                 textTheme: GoogleFonts.dmSansTextTheme(
                   Theme.of(context).textTheme,
