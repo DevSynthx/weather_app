@@ -13,8 +13,19 @@ class WeatherRepository extends ICurrentWeatherRepo {
   WeatherRepository(this._weatherService);
 
   @override
-  Future<CurrentWeather> currentWeather() async {
-    final current = await _weatherService.currentWeather();
+  Future<CurrentWeather> currentWeather([String cityName = '']) async {
+    final current = await _weatherService.currentWeather(cityName);
     return current;
+  }
+
+  @override
+  Future<CurrentWeather> weatherCityName([String cityName = '']) async {
+    final city = await _weatherService.currentWeather(cityName);
+    return city;
+  }
+
+  @override
+  Future<CurrentWeather> hourlyForecast([String cityName = 'bariga']) async {
+    return await _weatherService.hourlyForecast(cityName);
   }
 }
