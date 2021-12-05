@@ -21,14 +21,35 @@ class WeatherService {
     _dio.interceptors.add(ErrorInterceptor());
     _dio.interceptors.add(PrettyDioLogger());
   }
-  Future<CurrentWeather> currentWeather() async {
-    const url =
-        "forecast/daily?q=bariga&cnt=5&appid=542ffd081e67f4512b705f89d2a611b2";
+
+  /// displays Daily forecast by city
+  Future<CurrentWeather> currentWeather([String cityName = 'bariga']) async {
+    final url =
+        "forecast/daily?q=$cityName&cnt=5&appid=542ffd081e67f4512b705f89d2a611b2";
+    var queryParameters = {"CityName": cityName};
 
     try {
-      final response = await _dio.get(
-        url,
-      );
+      final response = await _dio.get(url, queryParameters: queryParameters);
+      final res = CurrentWeather.fromJson(response.data);
+      return res;
+    } on DioError catch (e) {
+      if (e.response != null && e.response!.data != '') {
+        Failure result = Failure.fromJson(e.response!.data);
+        throw result.errorMessage!;
+      } else {
+        throw e.error;
+      }
+    }
+  }
+
+  /// displays hourly forecast by city
+  Future<CurrentWeather> hourlyForecast([String cityName = 'bariga']) async {
+    final url =
+        "forecast/hourly?q=$cityName&cnt=5&appid=542ffd081e67f4512b705f89d2a611b2";
+    var queryParameters = {"CityName": cityName};
+
+    try {
+      final response = await _dio.get(url, queryParameters: queryParameters);
       final res = CurrentWeather.fromJson(response.data);
       return res;
     } on DioError catch (e) {
