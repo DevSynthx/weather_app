@@ -28,4 +28,17 @@ class WeatherRepository extends ICurrentWeatherRepo {
   Future<CurrentWeather> hourlyForecast([String cityName = 'bariga']) async {
     return await _weatherService.hourlyForecast(cityName);
   }
+
+  @override
+  Future<CurrentWeather> getWeatherData(
+      {double? currentLatitude, double? currentLongitude}) async {
+    final location = await _weatherService.currentWeather();
+    return location;
+  }
+
+  @override
+  Future getUserLocation() async {
+    final getLocation = await _weatherService.getUserLocation();
+    return getLocation;
+  }
 }

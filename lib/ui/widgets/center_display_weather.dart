@@ -6,7 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:weather_app/core/controller/generic_state_notifier.dart';
 import 'package:weather_app/core/model/current_weather.dart';
+import 'package:weather_app/ui/widgets/snackBar/snack_bar.dart';
 import 'package:weather_app/vm/current_weather_vm.dart';
 
 class CenterWeatherDisplay extends HookConsumerWidget {
@@ -49,6 +51,13 @@ class CenterWeatherDisplay extends HookConsumerWidget {
       return count.cancel;
     });
 
+    // ref.listen<RequestState>(currentWeatherProvider, (T, value) {
+    //   if (value is Error) {
+    //     return AppSnackBar.showErrorSnackBar(context,
+    //         message: value.error.toString());
+    //   }
+    // });
+
     return Container(
         padding: EdgeInsets.only(top: 10.w),
         height: 300,
@@ -62,7 +71,13 @@ class CenterWeatherDisplay extends HookConsumerWidget {
             borderRadius: BorderRadius.circular(10.r)),
         child: vm.when(
           error: (Object error, StackTrace stackTrace) {
-            return Text(error.toString());
+            return const Center(
+              child: Text(
+                "     City not Found\n"
+                "Please search correctly",
+                style: TextStyle(color: Colors.white),
+              ),
+            );
           },
           idle: () {
             return const Center(child: CircularProgressIndicator());

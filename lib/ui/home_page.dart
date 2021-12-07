@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_debounce_it/just_debounce_it.dart';
 import 'package:weather_app/ui/widgets/hourly_weather_screen.dart';
 import 'package:weather_app/ui/widgets/timer_view.dart';
 import 'package:weather_app/ui/widgets/top_header.dart';
 import 'package:weather_app/vm/current_weather_vm.dart';
+import 'package:weather_app/vm/get_device_location.dart';
+import 'package:weather_app/vm/user_location.dart';
 
 import 'widgets/center_display_weather.dart';
 
@@ -15,6 +20,52 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final location = useState('');
+    final address = useState('search');
+    final deviceLocation = useState('');
+
+    // getLocation() async {
+    //   final Position position = await Geolocator.getCurrentPosition(
+    //       desiredAccuracy: LocationAccuracy.high,
+    //       forceAndroidLocationManager: true);
+    //   location.value =
+    //       'Lat: ${position.latitude} , Long: ${position.longitude}';
+    //   List<Placemark> placemarks =
+    //       await placemarkFromCoordinates(position.latitude, position.longitude);
+    //   Placemark place = placemarks[0];
+    //   address.value =
+    //       '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
+    //   print(location.value);
+    // }
+
+    // Future<void> getAddressFromLatLong() async {
+    //   final Position position = await Geolocator.getCurrentPosition(
+    //       desiredAccuracy: LocationAccuracy.high);
+    //   List<Placemark> placemarks =
+    //       await placemarkFromCoordinates(position.latitude, position.longitude);
+    //   print(placemarks);
+    //   Placemark place = placemarks[0];
+    //   address.value =
+    //       '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
+    // }
+
+    // bool isLoading = false;
+
+    // Future getUserLocation() async {
+    //   isLoading = true;
+    //   ref.read(getDeviceLocationProvider);
+    //   isLoading = false;
+    // }
+
+    useEffect(() {
+      // getLocation();
+      // getUserLocation();
+
+      // getAddressFromLatLong();
+      // location.value = formatted;
+    });
+
+    final vm = ref.watch(userLocationProvider);
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(top: 15, left: 25.w, right: 25.w),
@@ -23,6 +74,40 @@ class HomePage extends HookConsumerWidget {
             child: Column(
               children: [
                 const TopHeader(),
+                // Text(location.value.toString()),
+                // Text(address.value),
+
+                vm.when(
+                  idle: () {
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                  loading: () {
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                  error: (Object error, StackTrace stackTrace) {
+                    print(error);
+                    return Text(error.toString());
+                  },
+                  success: (data) {
+                    return Text(data!.city!.name.toString());
+                  },
+                ),
+
+                // Text(currentPosition.latitude.toString()),
+                //   idle: () {
+                //     return const Center(child: CircularProgressIndicator());
+                //   },
+                //   loading: () {
+                //     return const Center(child: CircularProgressIndicator());
+                //   },
+                //   success: (data) {
+                //     return Text(data!.city!.name.toString());
+                //   },
+                //   error: (Object error, StackTrace stackTrace) {
+                //     print(error);
+                //     return Text(error.toString());
+                //   },
+                // ),
 
                 const Gap(30),
                 const GreetingText(),
