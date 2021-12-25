@@ -17,6 +17,7 @@ class TopHeader extends HookConsumerWidget {
     final vm = ref.watch(currentWeatherProvider);
     final searchController = useTextEditingController();
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         AnimSearchBar(
           textController: searchController,
@@ -29,7 +30,7 @@ class TopHeader extends HookConsumerWidget {
           autoFocus: true,
           onChange: (value) {
             Debounce.seconds(
-                1,
+                2,
                 () => ref
                     .read(currentWeatherProvider.notifier)
                     .getWeather(value));

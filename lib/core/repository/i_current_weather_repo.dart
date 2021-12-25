@@ -1,10 +1,8 @@
 import 'package:weather_app/core/model/current_weather.dart';
+import 'package:weather_app/core/model/weather_by_current_location.dart';
 
 abstract class ICurrentWeatherRepo {
-  Future<CurrentWeather> currentWeather([String cityName = 'Ikeja']);
-  Future<CurrentWeather> weatherCityName([String cityName = '']);
-  Future<CurrentWeather> hourlyForecast([String cityName = 'bariga']);
-  Future<CurrentWeather> getWeatherData(
-      {required double currentLatitude, required double currentLongitude});
-  Future getUserLocation();
+  Future currentWeather(String cityName);
+  Future getWeatherData();
+  // Future getUserLocation();
 }

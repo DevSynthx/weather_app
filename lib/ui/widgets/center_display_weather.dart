@@ -6,9 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:weather_app/core/controller/generic_state_notifier.dart';
-import 'package:weather_app/core/model/current_weather.dart';
-import 'package:weather_app/ui/widgets/snackBar/snack_bar.dart';
 import 'package:weather_app/vm/current_weather_vm.dart';
 
 class CenterWeatherDisplay extends HookConsumerWidget {
@@ -24,8 +21,6 @@ class CenterWeatherDisplay extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final vm = ref.watch(currentWeatherProvider);
     final toggle = ref.watch(toggleStateProvider);
-    // var time = DateTime.now().hour;
-    // String? timer;
     final store = useState('');
 
     // format date
@@ -48,6 +43,8 @@ class CenterWeatherDisplay extends HookConsumerWidget {
       final count = Timer.periodic(const Duration(seconds: 1), (time) {
         _getTime();
       });
+      final String = count.toString();
+
       return count.cancel;
     });
 
@@ -59,184 +56,178 @@ class CenterWeatherDisplay extends HookConsumerWidget {
     // });
 
     return Container(
-        padding: EdgeInsets.only(top: 10.w),
-        height: 300,
-        width: 300,
-        decoration: BoxDecoration(
-            color: const Color(0xffffffff).withOpacity(0.11),
-            border: Border.all(
-              width: 2,
-              color: const Color(0xffffffff).withOpacity(0.5),
-            ),
-            borderRadius: BorderRadius.circular(10.r)),
+        // padding: EdgeInsets.only(top: 10.w),
+        // height: 300,
+        // width: MediaQuery.of(context).size.width,
+        // decoration: BoxDecoration(
+        //     color: const Color(0xffffffff).withOpacity(0.11),
+        //     border: Border.all(
+        //       width: 2,
+        //       color: const Color(0xffffffff).withOpacity(0.5),
+        //     ),
+        //     borderRadius: BorderRadius.circular(10.r)),
         child: vm.when(
-          error: (Object error, StackTrace stackTrace) {
-            return const Center(
-              child: Text(
-                "     City not Found\n"
-                "Please search correctly",
-                style: TextStyle(color: Colors.white),
-              ),
+      error: (Object error, StackTrace stackTrace) {
+        return const Center(
+          child: Text(
+            "     City not Found\n"
+            "Please search correctly",
+            style: TextStyle(color: Colors.white),
+          ),
+        );
+      },
+      idle: () {
+        return const Center(child: CircularProgressIndicator());
+      },
+      loading: () {
+        return const Center(child: CircularProgressIndicator());
+      },
+      success: (value) {
+        String tempDisplay() {
+          var timeNow = DateTime.now().hour;
+
+          if (timeNow <= 12) {
+            return (dynamic temp) {
+              final celcius = (temp / 10).toStringAsFixed(1);
+              return celcius.toString();
+            }(
+              value!.list![0].temp!.morn,
             );
-          },
-          idle: () {
-            return const Center(child: CircularProgressIndicator());
-          },
-          loading: () {
-            return const Center(child: CircularProgressIndicator());
-          },
-          success: (value) {
-            String tempDisplay() {
-              var timeNow = DateTime.now().hour;
+          } else if ((timeNow > 12) && (timeNow <= 16)) {
+            return (dynamic temp) {
+              final celcius = (temp / 10).toStringAsFixed(1);
+              return celcius.toString();
+            }(
+              value!.list![0].temp!.day,
+            );
+          } else if ((timeNow > 16) && (timeNow < 20)) {
+            return (dynamic temp) {
+              final celcius = (temp / 10).toStringAsFixed(1);
+              return celcius.toString();
+            }(
+              value!.list![0].temp!.eve,
+            );
+          } else {
+            return (dynamic temp) {
+              final celcius = (temp / 10).toStringAsFixed(1);
+              return celcius.toString();
+            }(
+              value!.list![0].temp!.night,
+            );
+          }
+        }
 
-              if (timeNow <= 12) {
-                return (dynamic temp) {
-                  final celcius = (temp / 10).toStringAsFixed(1);
-                  return celcius.toString();
-                }(
-                  value!.list![0].temp!.morn,
-                );
-              } else if ((timeNow > 12) && (timeNow <= 16)) {
-                return (dynamic temp) {
-                  final celcius = (temp / 10).toStringAsFixed(1);
-                  return celcius.toString();
-                }(
-                  value!.list![0].temp!.day,
-                );
-              } else if ((timeNow > 16) && (timeNow < 20)) {
-                return (dynamic temp) {
-                  final celcius = (temp / 10).toStringAsFixed(1);
-                  return celcius.toString();
-                }(
-                  value!.list![0].temp!.eve,
-                );
-              } else {
-                return (dynamic temp) {
-                  final celcius = (temp / 10).toStringAsFixed(1);
-                  return celcius.toString();
-                }(
-                  value!.list![0].temp!.night,
-                );
-              }
-            }
+        String fahreheitDisplay() {
+          var timeNow = DateTime.now().hour;
 
-            String fahreheitDisplay() {
-              var timeNow = DateTime.now().hour;
+          if (timeNow <= 12) {
+            return (dynamic temp) {
+              var celcius = (temp / 10);
+              var fah = ((9 * celcius) / 5 + 32).toStringAsFixed(0);
 
-              if (timeNow <= 12) {
-                return (dynamic temp) {
-                  var celcius = (temp / 10);
-                  var fah = ((9 * celcius) / 5 + 32).toStringAsFixed(0);
+              return '${fah.toString()}${"\u2109"}';
+            }(
+              value!.list![0].temp!.day,
+            );
+          } else if ((timeNow > 12) && (timeNow <= 16)) {
+            return (dynamic temp) {
+              var celcius = (temp / 10);
+              var fah = ((9 * celcius) / 5 + 32).toStringAsFixed(0);
 
-                  return '${fah.toString()}${"\u2109"}';
-                }(
-                  value!.list![0].temp!.day,
-                );
-              } else if ((timeNow > 12) && (timeNow <= 16)) {
-                return (dynamic temp) {
-                  var celcius = (temp / 10);
-                  var fah = ((9 * celcius) / 5 + 32).toStringAsFixed(0);
+              return '${fah.toString()}${"\u2109"}';
+            }(
+              value!.list![0].temp!.eve,
+            );
+          } else if ((timeNow > 16) && (timeNow < 20)) {
+            return (dynamic temp) {
+              var celcius = (temp / 10);
+              var fah = ((9 * celcius) / 5 + 32).toStringAsFixed(0);
 
-                  return '${fah.toString()}${"\u2109"}';
-                }(
-                  value!.list![0].temp!.eve,
-                );
-              } else if ((timeNow > 16) && (timeNow < 20)) {
-                return (dynamic temp) {
-                  var celcius = (temp / 10);
-                  var fah = ((9 * celcius) / 5 + 32).toStringAsFixed(0);
+              return '${fah.toString()}${"\u2109"}';
+            }(
+              value!.list![0].temp!.eve,
+            );
+          } else {
+            return (dynamic temp) {
+              var celcius = (temp / 10);
+              var fah = ((9 * celcius) / 5 + 32).toStringAsFixed(0);
 
-                  return '${fah.toString()}${"\u2109"}';
-                }(
-                  value!.list![0].temp!.eve,
-                );
-              } else {
-                return (dynamic temp) {
-                  var celcius = (temp / 10);
-                  var fah = ((9 * celcius) / 5 + 32).toStringAsFixed(0);
+              return '${fah.toString()}${"\u2109"}';
+            }(
+              value!.list![0].temp!.night,
+            );
+          }
+        }
 
-                  return '${fah.toString()}${"\u2109"}';
-                }(
-                  value!.list![0].temp!.night,
-                );
-              }
-            }
-
-            return Column(
+        // final String name = value!.city!.country!;
+        // final countryName = name;
+        return Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Image.network("http://openweathermap.org/img/wn/02d@2x.png"),
+                const Gap(10),
+                Column(
                   children: [
-                    Image.network(
-                        "http://openweathermap.org/img/wn/02d@2x.png"),
-                    // IconButton(
-                    //     onPressed: () {},
-                    //     icon: const FaIcon(
-                    //       FontAwesomeIcons.cloudSun,
-                    //       color: Colors.white,
-                    //       size: 55,
-                    //     )),
+                    const Gap(20),
+                    Text(
+                      'Today',
+                      style: TextStyle(
+                          fontSize: 28.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white),
+                    ),
                     const Gap(10),
-                    Column(
-                      children: [
-                        const Gap(20),
-                        Text(
-                          'Today',
-                          style: TextStyle(
-                              fontSize: 28.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white),
-                        ),
-                        const Gap(10),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: Text(
-                            "${value!.city!.name.toString()}, "
-                            " ${value.city!.country.toString()}  ",
-                            style: TextStyle(
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    )
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15),
+                      child: Text(
+                        "${value!.city!.name.toString()}, "
+                        " ${value.city!.country.toString()}  ",
+                        style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white),
+                      ),
+                    ),
                   ],
-                ),
-                const Gap(5),
-                GestureDetector(
-                  onTap: () {
-                    ref.read(toggleStateProvider.notifier).state =
-                        toggle == true ? false : true;
-                  },
-                  child: toggle == true
-                      ? Text(
-                          "${tempDisplay()}${"\u2103"}",
-                          style: TextStyle(
-                              fontSize: 100.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white),
-                        )
-                      : Text(
-                          fahreheitDisplay(),
-                          style: TextStyle(
-                              fontSize: 100.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white),
-                        ),
-                ),
-                Text(
-                  "${value.city!.name.toString()}, "
-                  " ${value.city!.country.toString()}  "
-                  "${store.value}",
-                  style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
-                ),
+                )
               ],
-            );
-          },
-        ));
+            ),
+            const Gap(5),
+            GestureDetector(
+              onTap: () {
+                ref.read(toggleStateProvider.notifier).state =
+                    toggle == true ? false : true;
+              },
+              child: toggle == true
+                  ? Text(
+                      "${tempDisplay()}${"\u2103"}",
+                      style: TextStyle(
+                          fontSize: 100.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white),
+                    )
+                  : Text(
+                      fahreheitDisplay(),
+                      style: TextStyle(
+                          fontSize: 100.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white),
+                    ),
+            ),
+            Text(
+              "${value.city!.name.toString()}, "
+              " ${value.city!.country.toString()}  "
+              "${store.value}",
+              style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white),
+            ),
+          ],
+        );
+      },
+    ));
   }
 }
