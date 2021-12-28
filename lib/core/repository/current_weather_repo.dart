@@ -1,5 +1,10 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:weather_app/core/model/current_weather.dart';
+import 'package:weather_app/core/model/daily_weather_data.dart';
+import 'package:weather_app/core/model/get_user_location.dart';
+import 'package:weather_app/core/model/hourly_weather_data.dart';
+import 'package:weather_app/core/model/user_location_weather.dart';
+import 'package:weather_app/core/model/weather_by_current_location.dart';
 import 'package:weather_app/core/repository/i_current_weather_repo.dart';
 import 'package:weather_app/core/services/weather_service.dart';
 
@@ -12,20 +17,40 @@ class WeatherRepository extends ICurrentWeatherRepo {
   final WeatherService _weatherService;
   WeatherRepository(this._weatherService);
 
+  // @override
+  // Future currentWeather(String cityName) async {
+  //   final current = await _weatherService.currentWeather(cityName);
+  //   return current;
+  // }
+
   @override
-  Future<CurrentWeather> currentWeather([String cityName = '']) async {
-    final current = await _weatherService.currentWeather(cityName);
-    return current;
+  Future<GetLocation> getLocationData() async {
+    final getData = await _weatherService.getLocationData();
+    return getData;
   }
 
   @override
-  Future<CurrentWeather> weatherCityName([String cityName = '']) async {
-    final city = await _weatherService.currentWeather(cityName);
-    return city;
+  Future<List<CurrentWeatherData>> getWeatherData() async {
+    final weatherData = await _weatherService.getWeatherData();
+    return weatherData;
   }
 
   @override
-  Future<CurrentWeather> hourlyForecast([String cityName = 'bariga']) async {
-    return await _weatherService.hourlyForecast(cityName);
+  Future<DailyWeatherData> dailyData() async {
+    final dailyData = await _weatherService.dailyData();
+    return dailyData;
   }
+
+  @override
+  Future<List<HourlyWeatherData>> hourlyWeatherData() async {
+    final hourlyData = await _weatherService.hourlyWeatherData();
+    return hourlyData;
+  }
+
+  // @override
+  // Future getUserLocation() async {
+  //   final getLocation = await _weatherService.getUserLocation();
+  //   return getLocation;
+  // }
+
 }

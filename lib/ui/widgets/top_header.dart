@@ -14,9 +14,10 @@ class TopHeader extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final vm = ref.watch(currentWeatherProvider);
+    // final vm = ref.watch(currentWeatherProvider);
     final searchController = useTextEditingController();
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         AnimSearchBar(
           textController: searchController,
@@ -28,11 +29,11 @@ class TopHeader extends HookConsumerWidget {
           closeSearchOnPrefixTap: true,
           autoFocus: true,
           onChange: (value) {
-            Debounce.seconds(
-                1,
-                () => ref
-                    .read(currentWeatherProvider.notifier)
-                    .getWeather(value));
+            // Debounce.seconds(
+            //     2,
+            //     () => ref
+            //         .read(currentWeatherProvider.notifier)
+            //         .getWeather(value));
           },
         ),
         const Spacer(),
