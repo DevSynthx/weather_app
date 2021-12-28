@@ -22,14 +22,23 @@ class StorageUtil {
     return _storageUtil;
   }
 
-  Future _init() async {
+  static Future init() async {
     _preferences = await SharedPreferences.getInstance();
   }
 
   // get string
-  static String getString(String key, {String defValue = ''}) {
-    if (_preferences == null) return defValue;
-    return _preferences?.getString(key) ?? defValue;
+  static String getString(String? strKey) {
+    String strValue = '';
+    if (strKey != null) {
+      strValue = _preferences!.getString(strKey)!;
+    }
+    return strValue;
+  }
+
+  static void setString(String? strkey, String? strValue) {
+    if (strkey != null && strValue != null) {
+      _preferences!.setString(strkey, strValue);
+    }
   }
 
   // put string
