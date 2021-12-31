@@ -15,14 +15,6 @@ class WeatherTab extends HookConsumerWidget {
     return SafeArea(
       child: Stack(
         children: [
-          // Container(
-          //   margin: EdgeInsets.only(left: 20.w, right: 20.w),
-          //   height: 50.h,
-          //   decoration: BoxDecoration(
-          //     borderRadius: BorderRadius.circular(5.r),
-          //     color: const Color(0xffe8e8e8),
-          //   ),
-          // ),
           Column(
             children: [
               Container(
@@ -41,7 +33,7 @@ class WeatherTab extends HookConsumerWidget {
                       fontSize: 17.sp,
                       fontWeight: FontWeight.w700,
                       color: Colors.white),
-                  unselectedLabelColor: Colors.black,
+                  unselectedLabelColor: Colors.grey[100],
                   labelPadding: EdgeInsets.zero,
                   indicatorPadding: EdgeInsets.zero,
                   indicator: BoxDecoration(
@@ -73,15 +65,15 @@ class WeatherTab extends HookConsumerWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 27.h),
+              SizedBox(height: 20.h),
               SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: 300.h,
                 // color: Colors.grey,
                 child: TabBarView(controller: _tabController, children: [
                   Container(),
-                  DailyWeather(),
-                  HourlyWeather()
+                  const DailyWeather(),
+                  const HourlyWeather()
 
                   // AllView(),
                   // InflowView(),

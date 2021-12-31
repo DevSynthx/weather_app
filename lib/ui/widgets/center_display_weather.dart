@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:weather_app/ui/widgets/device_location.dart';
 import 'package:weather_app/vm/current_weather_data.dart';
 import 'package:weather_app/vm/current_weather_vm.dart';
 
@@ -55,239 +56,168 @@ class CenterWeatherDisplay extends HookConsumerWidget {
         return const Center(child: CircularProgressIndicator());
       },
       error: (Object error, StackTrace stackTrace) {
-        return Text(error.toString());
+        return Center(child: Text(error.toString()));
       },
       success: (data) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        const String iconx = 'assets/images/01-s.png';
+        const String iconxx = 'assets/images/02-s.png';
+        const String icons = 'assets/images/03-s.png';
+        String getIcons() {
+          if (data![0].weatherText == "sunny") {
+            return iconxx;
+          }
+          if (data[0].weatherText == "Mostly Sunny") {
+            return iconx;
+          }
+          if (data[0].weatherText == "Partly Sunny") {
+            return icons;
+          } else {
+            return iconx;
+          }
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              '${data![0].temperature!.imperial!.value.toString()}\u00B0',
+              '${data![0].temperature!.imperial!.value!.toInt()}\u00B0',
               style: TextStyle(
                 fontSize: 100.sp,
                 fontWeight: FontWeight.w600,
                 color: Colors.white,
               ),
             ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  getIcons(),
+                  width: 50,
+                  height: 50,
+                ),
+                Text(
+                  data[0].weatherText.toString(),
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+            const DeviceLocation(),
+            Gap(35.h),
+            IntrinsicHeight(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        '${data[0].wind!.speed!.metric!.value!.toString()} ${data[0].wind!.speed!.metric!.unit!.toString()}',
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Gap(7.h),
+                      Text(
+                        'Wind',
+                        style: TextStyle(
+                          fontSize: 17.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey[200],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  VerticalDivider(
+                    color: Colors.grey[200],
+                    thickness: 1,
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        data[0].dewPoint!.imperial!.value!.toInt().toString(),
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Gap(7.h),
+                      Text(
+                        'Dew Point',
+                        style: TextStyle(
+                          fontSize: 17.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey[200],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  VerticalDivider(
+                    color: Colors.grey[200],
+                    thickness: 1,
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        '${data[0].visibility!.metric!.value!.toString()} ${data[0].visibility!.metric!.unit!.toString()}',
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Gap(7.h),
+                      Text(
+                        'Visibility',
+                        style: TextStyle(
+                          fontSize: 17.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey[200],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  VerticalDivider(
+                    color: Colors.grey[200],
+                    thickness: 1,
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        data[0].indoorRelativeHumidity.toString(),
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Gap(7.h),
+                      Text(
+                        'Humidity',
+                        style: TextStyle(
+                          fontSize: 17.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey[200],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            )
           ],
         );
       },
     );
-    // return Container(
-    //     child: vm.when(
-    //   error: (Object error, StackTrace stackTrace) {
-    //     return const Center(
-    //       child: Text(
-    //         "     City not Found\n"
-    //         "Please search correctly",
-    //         style: TextStyle(color: Colors.white),
-    //       ),
-    //     );
-    //   },
-    //   idle: () {
-    //     return const Center(child: CircularProgressIndicator());
-    //   },
-    //   loading: () {
-    //     return const Center(child: CircularProgressIndicator());
-    //   },
-    //   success: (value) {
-    //     String tempDisplay() {
-    //       var timeNow = DateTime.now().hour;
-
-    //       if (timeNow <= 12) {
-    //         return (dynamic temp) {
-    //           final celcius = (temp / 10).toStringAsFixed(1);
-    //           return celcius.toString();
-    //         }(
-    //           value!.list![0].temp!.morn,
-    //         );
-    //       } else if ((timeNow > 12) && (timeNow <= 16)) {
-    //         return (dynamic temp) {
-    //           final celcius = (temp / 10).toStringAsFixed(1);
-    //           return celcius.toString();
-    //         }(
-    //           value!.list![0].temp!.day,
-    //         );
-    //       } else if ((timeNow > 16) && (timeNow < 20)) {
-    //         return (dynamic temp) {
-    //           final celcius = (temp / 10).toStringAsFixed(1);
-    //           return celcius.toString();
-    //         }(
-    //           value!.list![0].temp!.eve,
-    //         );
-    //       } else {
-    //         return (dynamic temp) {
-    //           final celcius = (temp / 10).toStringAsFixed(1);
-    //           return celcius.toString();
-    //         }(
-    //           value!.list![0].temp!.night,
-    //         );
-    //       }
-    //     }
-
-    //     String fahreheitDisplay() {
-    //       var timeNow = DateTime.now().hour;
-
-    //       if (timeNow <= 12) {
-    //         return (dynamic temp) {
-    //           var celcius = (temp / 10);
-    //           var fah = ((9 * celcius) / 5 + 32).toStringAsFixed(0);
-
-    //           return '${fah.toString()}';
-    //         }(
-    //           value!.list![0].temp!.day,
-    //         );
-    //       } else if ((timeNow > 12) && (timeNow <= 16)) {
-    //         return (dynamic temp) {
-    //           var celcius = (temp / 10);
-    //           var fah = ((9 * celcius) / 5 + 32).toStringAsFixed(0);
-
-    //           return '${fah.toString()}';
-    //         }(
-    //           value!.list![0].temp!.eve,
-    //         );
-    //       } else if ((timeNow > 16) && (timeNow < 20)) {
-    //         return (dynamic temp) {
-    //           var celcius = (temp / 10);
-    //           var fah = ((9 * celcius) / 5 + 32).toStringAsFixed(0);
-
-    //           return '${fah.toString()}';
-    //         }(
-    //           value!.list![0].temp!.eve,
-    //         );
-    //       } else {
-    //         return (dynamic temp) {
-    //           var celcius = (temp / 10);
-    //           var fah = ((9 * celcius) / 5 + 32).toStringAsFixed(0);
-
-    //           return '${fah.toString()}';
-    //         }(
-    //           value!.list![0].temp!.night,
-    //         );
-    //       }
-    //     }
-
-    //     return Column(
-    //       children: [
-    //         Row(
-    //           mainAxisAlignment: MainAxisAlignment.center,
-    //           children: [
-    //             Image.network("http://openweathermap.org/img/wn/02d@2x.png"),
-    //             const Gap(10),
-    //             Column(
-    //               children: [
-    //                 const Gap(20),
-    //                 Text(
-    //                   'Today',
-    //                   style: TextStyle(
-    //                       fontSize: 28.sp,
-    //                       fontWeight: FontWeight.w600,
-    //                       color: Colors.white),
-    //                 ),
-    //                 const Gap(10),
-    //                 Padding(
-    //                   padding: const EdgeInsets.only(left: 15),
-    //                   child: Text(
-    //                     "${value!.city!.name.toString()}, "
-    //                     " ${value.city!.country.toString()}  ",
-    //                     style: TextStyle(
-    //                         fontSize: 18.sp,
-    //                         fontWeight: FontWeight.w400,
-    //                         color: Colors.white),
-    //                   ),
-    //                 ),
-    //               ],
-    //             )
-    //           ],
-    //         ),
-    //         const Gap(5),
-    //         GestureDetector(
-    //           onTap: () {
-    //             ref.read(toggleStateProvider.notifier).state =
-    //                 toggle == true ? false : true;
-    //           },
-    //           child: toggle == true
-    //               ? Stack(
-    //                   children: [
-    //                     Padding(
-    //                       padding: const EdgeInsets.only(right: 30),
-    //                       child: Text(
-    //                         "${tempDisplay()}",
-    //                         style: TextStyle(
-    //                             fontSize: 100.sp,
-    //                             fontWeight: FontWeight.w400,
-    //                             color: Colors.white),
-    //                       ),
-    //                     ),
-    //                     Padding(
-    //                       padding: const EdgeInsets.only(left: 150),
-    //                       child: Text(
-    //                         " \u00B0".toLowerCase(),
-    //                         style: TextStyle(
-    //                             fontSize: 80.sp,
-    //                             fontWeight: FontWeight.w400,
-    //                             color: Colors.white),
-    //                       ),
-    //                     ),
-    //                     Padding(
-    //                       padding: const EdgeInsets.only(left: 190),
-    //                       child: Text(
-    //                         "c",
-    //                         style: TextStyle(
-    //                             fontSize: 60.sp,
-    //                             // fontWeight: FontWeight.w400,
-    //                             color: Colors.white),
-    //                       ),
-    //                     ),
-    //                   ],
-    //                 )
-    //               : Stack(
-    //                   children: [
-    //                     Padding(
-    //                       padding: const EdgeInsets.only(left: 50),
-    //                       child: Text(
-    //                         fahreheitDisplay(),
-    //                         style: TextStyle(
-    //                             fontSize: 100.sp,
-    //                             fontWeight: FontWeight.w400,
-    //                             color: Colors.white),
-    //                       ),
-    //                     ),
-    //                     Padding(
-    //                       padding: const EdgeInsets.only(left: 130),
-    //                       child: Text(
-    //                         " \u00B0".toLowerCase(),
-    //                         style: TextStyle(
-    //                             fontSize: 80.sp,
-    //                             fontWeight: FontWeight.w400,
-    //                             color: Colors.white),
-    //                       ),
-    //                     ),
-    //                     Padding(
-    //                       padding: const EdgeInsets.only(left: 175, top: 20),
-    //                       child: Text(
-    //                         "F",
-    //                         style: TextStyle(
-    //                             fontSize: 35.sp,
-    //                             // fontWeight: FontWeight.w400,
-    //                             color: Colors.white),
-    //                       ),
-    //                     ),
-    //                   ],
-    //                 ),
-    //         ),
-    //         Text(
-    //           "${value.city!.name.toString()}, "
-    //           " ${value.city!.country.toString()}  "
-    //           "${store.value}",
-    //           style: TextStyle(
-    //               fontSize: 20.sp,
-    //               fontWeight: FontWeight.w600,
-    //               color: Colors.white),
-    //         ),
-    //       ],
-    //     );
-    //   },
-    // ));
   }
 }
