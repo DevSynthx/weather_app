@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glassmorphism/glassmorphism.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:weather_app/vm/daily_weather_data.dart';
+import 'package:weather_app/vm/hourly_weather_data_vm.dart';
 
-class DailyWeather extends HookConsumerWidget {
-  const DailyWeather({Key? key}) : super(key: key);
+class HourlyWeather extends ConsumerStatefulWidget {
+  const HourlyWeather({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final vm = ref.watch(dailyDataProvider);
-    final iconx = useState('assets/images/04-s.png');
-    final iconxx = useState('assets/images/12-s.png');
-    final icons = useState('assets/images/18-s.png');
+  HourlyWeatherState createState() => HourlyWeatherState();
+}
+
+class HourlyWeatherState extends ConsumerState<HourlyWeather>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    final vm = ref.watch(hourlyDataProvider);
+
     return vm.when(
       idle: () {
         return const Center(child: Text('Loading loaction'));
@@ -23,34 +27,47 @@ class DailyWeather extends HookConsumerWidget {
         return const Center(child: Text('Loading loaction'));
       },
       error: (Object error, StackTrace stackTrace) {
-        return Text(error.toString());
+        return Center(child: Text(error.toString()));
       },
       success: (data) {
+        const String iconx = 'assets/images/04-s.png';
+        const String iconxx = 'assets/images/12-s.png';
+        const String icons = 'assets/images/18-s.png';
+        const String weatherIcon1 = 'assets/images/02-s.png';
+        const String weatherIcon2 = 'assets/images/33-s.png';
         return SizedBox(
           height: 400,
           width: MediaQuery.of(context).size.width,
           child: ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics()),
               // scrollDirection: Axis.horizontal,
-              itemCount: data!.dailyForecasts!.length,
+              itemCount: data!.length,
               itemBuilder: (context, index) {
-                final daily = data.dailyForecasts![index];
+                final hourly = data[index];
                 String getIcons() {
-                  if (daily.day!.icon == 12) {
-                    return iconxx.value;
+                  if (hourly.weatherIcon == 12) {
+                    return iconxx;
                   }
-                  if (daily.day!.icon == 4) {
-                    return iconx.value;
+                  if (hourly.weatherIcon == 4) {
+                    return iconx;
                   }
-                  if (daily.day!.icon == 18) {
-                    return icons.value;
+                  if (hourly.weatherIcon == 18) {
+                    return icons;
+                  }
+                  if (hourly.weatherIcon == 2) {
+                    return weatherIcon1;
+                  }
+                  if (hourly.weatherIcon == 34) {
+                    return weatherIcon2;
                   } else {
-                    return iconx.value;
+                    return iconx;
                   }
                 }
 
-                DateTime date = daily.date!;
-                final weatherDate = DateFormat('EEE,MMM,yy').format(date);
-                print(weatherDate);
+                DateTime date = hourly.dateTime!;
+                final time = DateFormat.jm().format(date);
+                print(time);
                 return Padding(
                   padding: const EdgeInsets.only(
                     top: 10,
@@ -61,7 +78,7 @@ class DailyWeather extends HookConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
-                            weatherDate,
+                            time,
                             style:
                                 TextStyle(fontSize: 15.sp, color: Colors.white),
                           ),
@@ -71,7 +88,7 @@ class DailyWeather extends HookConsumerWidget {
                             height: 25,
                           ),
                           Text(
-                            '${daily.temperature!.minimum!.value.toString()}\u00B0 / ${daily.temperature!.maximum!.value.toString()}\u00B0',
+                            '${hourly.temperature!.value.toString()}\u00B0',
                             style:
                                 TextStyle(fontSize: 15.sp, color: Colors.white),
                           ),
@@ -98,8 +115,8 @@ class DailyWeather extends HookConsumerWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Color(0xFFffffff).withOpacity(0.5),
-                        Color((0xFFFFFFFF)).withOpacity(0.5),
+                        const Color(0xFFffffff).withOpacity(0.5),
+                        const Color((0xFFFFFFFF)).withOpacity(0.5),
                       ],
                     ),
                   ),
@@ -109,4 +126,8 @@ class DailyWeather extends HookConsumerWidget {
       },
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

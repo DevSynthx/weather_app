@@ -30,7 +30,7 @@ class DeviceLocation extends HookConsumerWidget {
         return const Center(child: Text('Loading loaction'));
       },
       error: (Object error, StackTrace stackTrace) {
-        return Text(error.toString());
+        return Center(child: Text(error.toString()));
       },
       success: (data) {
         StorageUtil.setString(Constant.locationKey, data!.key);
@@ -49,15 +49,21 @@ class DeviceLocation extends HookConsumerWidget {
         // final location = StorageUtil.getString(Constant.locationKey);
         // print(location);
         return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Icon(
+              Icons.location_on_outlined,
+              color: Colors.grey[100],
+            ),
+            Gap(10.w),
             Text(
               data.localizedName.toString(),
-              style: TextStyle(color: Colors.white, fontSize: 20.sp),
+              style: TextStyle(color: Colors.grey[100], fontSize: 20.sp),
             ),
             Gap(10.w),
             Text(
               data.country!.englishName.toString(),
-              style: TextStyle(color: Colors.white, fontSize: 20.sp),
+              style: TextStyle(color: Colors.grey[100], fontSize: 20.sp),
             ),
           ],
         );

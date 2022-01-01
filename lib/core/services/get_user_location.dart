@@ -1,7 +1,6 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/core/global/constant.dart';
-import 'package:weather_app/core/storage/share_pref.dart';
 
 class Location {
   double? latitude;
