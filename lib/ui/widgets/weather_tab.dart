@@ -2,8 +2,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:weather_app/ui/widgets/daily_data_display.dart';
-import 'package:weather_app/ui/widgets/hourly_data_display.dart';
+import 'package:weather_app/ui/widgets/weather%20Tabs/daily_data_display.dart';
+import 'package:weather_app/ui/widgets/weather%20Tabs/hourly_data_display.dart';
+
+import 'weather Tabs/today_data_display.dart';
 
 class WeatherTab extends HookConsumerWidget {
   const WeatherTab({Key? key}) : super(key: key);
@@ -70,10 +72,10 @@ class WeatherTab extends HookConsumerWidget {
                 width: MediaQuery.of(context).size.width,
                 height: 300.h,
                 // color: Colors.grey,
-                child: TabBarView(controller: _tabController, children: [
-                  Container(),
-                  const DailyWeather(),
-                  const HourlyWeather()
+                child: TabBarView(controller: _tabController, children: const [
+                  TodayWeather(),
+                  DailyWeather(),
+                  HourlyWeather()
 
                   // AllView(),
                   // InflowView(),

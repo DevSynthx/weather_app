@@ -7,6 +7,7 @@ import 'package:weather_app/core/model/daily_weather_data.dart';
 import 'package:weather_app/core/model/error_data.dart';
 import 'package:weather_app/core/model/get_user_location.dart';
 import 'package:weather_app/core/model/hourly_weather_data.dart';
+import 'package:weather_app/core/model/one_day_weather.dart';
 import 'package:weather_app/core/model/user_location_weather.dart';
 import 'package:weather_app/core/storage/share_pref.dart';
 import 'package:weather_app/core/utils/error_interceptor.dart';
@@ -34,8 +35,6 @@ class WeatherService {
     final url =
         'locations/v1/cities/geoposition/search?apikey=${Constant.apiKey}=$latitude,$longitude';
 
-    // "weather?lat=$latitude&lon=$longitude&appid=542ffd081e67f4512b705f89d2a611b2";
-
     try {
       final response = await _dio.get(
         url,
@@ -58,8 +57,6 @@ class WeatherService {
 
     final url =
         'currentconditions/v1/$locationKey?apikey=${Constant.apiKey}&details=true';
-
-    // "weather?lat=$latitude&lon=$longitude&appid=542ffd081e67f4512b705f89d2a611b2";
 
     try {
       final response = await _dio.get(
@@ -103,7 +100,7 @@ class WeatherService {
 
   Future<List<HourlyWeatherData>> hourlyWeatherData() async {
     final locationKey = StorageUtil.getString(Constant.locationKey);
-    // print(feyi);
+
     final url =
         'forecasts/v1/hourly/12hour/$locationKey?apikey=${Constant.apiKey}';
 
@@ -113,6 +110,30 @@ class WeatherService {
       );
       final res = List<HourlyWeatherData>.from(
           response.data.map((x) => HourlyWeatherData.fromJson(x)));
+      return res;
+    } on DioError catch (e) {
+      if (e.response != null && e.response!.data != '') {
+        ErrorData result = ErrorData.fromJson(e.response!.data);
+        print(result.code);
+
+        throw result.code!;
+      } else {
+        throw e.error;
+      }
+    }
+  }
+
+  Future<OneDayWeather> oneDayData() async {
+    final locationKey = StorageUtil.getString(Constant.locationKey);
+
+    final url =
+        "forecasts/v1/daily/1day/$locationKey?apikey=${Constant.apiKey}&details=true";
+
+    try {
+      final response = await _dio.get(
+        url,
+      );
+      final res = OneDayWeather.fromJson(response.data);
       return res;
     } on DioError catch (e) {
       if (e.response != null && e.response!.data != '') {
