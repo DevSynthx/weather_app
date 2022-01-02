@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_debounce_it/just_debounce_it.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:weather_app/ui/widgets/animated_search.dart';
 import 'package:weather_app/vm/current_weather_vm.dart';
 
@@ -19,23 +20,36 @@ class TopHeader extends HookConsumerWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        AnimSearchBar(
-          textController: searchController,
-          width: 250.2,
-          helpText: "Search...",
-          style: const TextStyle(color: Colors.white),
-          color: const Color(0xffffffff).withOpacity(0.10),
-          closeSearchOnSuffixTap: true,
-          closeSearchOnPrefixTap: true,
-          autoFocus: true,
-          onChange: (value) {
-            // Debounce.seconds(
-            //     2,
-            //     () => ref
-            //         .read(currentWeatherProvider.notifier)
-            //         .getWeather(value));
-          },
-        ),
+        // AnimSearchBar(
+        //   textController: searchController,
+        //   width: 250.2,
+        //   helpText: "Search...",
+        //   style: const TextStyle(color: Colors.white),
+        //   color: const Color(0xffffffff).withOpacity(0.10),
+        //   closeSearchOnSuffixTap: true,
+        //   closeSearchOnPrefixTap: true,
+        //   autoFocus: true,
+        //   onChange: (value) {
+        //     // Debounce.seconds(
+        //     //     2,
+        //     //     () => ref
+        //     //         .read(currentWeatherProvider.notifier)
+        //     //         .getWeather(value));
+        //   },
+        // ),
+        InkWell(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) => Container(
+                  height: 500,
+                ),
+              );
+            },
+            child: const Icon(
+              Icons.search,
+              color: Colors.white,
+            )),
         const Spacer(),
         Container(
           height: 50.h,
