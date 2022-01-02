@@ -9,6 +9,7 @@ import 'package:weather_app/core/model/get_user_location.dart';
 import 'package:weather_app/core/model/hourly_weather_data.dart';
 import 'package:weather_app/core/model/one_day_weather.dart';
 import 'package:weather_app/core/model/user_location_weather.dart';
+import 'package:weather_app/core/model/weather_by_location.dart';
 import 'package:weather_app/core/storage/share_pref.dart';
 import 'package:weather_app/core/utils/error_interceptor.dart';
 
@@ -139,6 +140,30 @@ class WeatherService {
       if (e.response != null && e.response!.data != '') {
         ErrorData result = ErrorData.fromJson(e.response!.data);
         print(result.code);
+
+        throw result.code!;
+      } else {
+        throw e.error;
+      }
+    }
+  }
+
+  Future<List<WeatherByLocation>> weatherByLocation(String cityName) async {
+    // final locationKey = StorageUtil.getString(Constant.locationKey);
+
+    final url =
+        "locations/v1/cities/search?apikey=${Constant.apiKey}=$cityName";
+
+    try {
+      final response = await _dio.get(
+        url,
+      );
+      final res = List<WeatherByLocation>.from(
+          response.data.map((x) => WeatherByLocation.fromJson(x)));
+      return res;
+    } on DioError catch (e) {
+      if (e.response != null && e.response!.data != '') {
+        ErrorData result = ErrorData.fromJson(e.response!.data);
 
         throw result.code!;
       } else {
