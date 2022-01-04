@@ -171,4 +171,29 @@ class WeatherService {
       }
     }
   }
+
+  Future<List<CurrentWeatherData>> searchLocationWeather() async {
+    final locationKey = StorageUtil.getString(Constant.searchKey);
+
+    final url =
+        'currentconditions/v1/$locationKey?apikey=${Constant.apiKey}&details=true';
+
+    try {
+      final response = await _dio.get(
+        url,
+      );
+
+      final res = List<CurrentWeatherData>.from(
+          response.data.map((x) => CurrentWeatherData.fromJson(x)));
+      return res;
+    } on DioError catch (e) {
+      if (e.response != null && e.response!.data != '') {
+        ErrorData result = ErrorData.fromJson(e.response!.data);
+
+        throw result.code!;
+      } else {
+        throw e.error;
+      }
+    }
+  }
 }

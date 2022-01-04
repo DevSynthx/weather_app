@@ -59,7 +59,7 @@ class DailyWeatherState extends ConsumerState<DailyWeather>
 
                 DateTime date = daily.date!;
                 final weatherDate = DateFormat('EEE,MMM,yy').format(date);
-                print(weatherDate);
+
                 return Padding(
                   padding: const EdgeInsets.only(
                     top: 10,

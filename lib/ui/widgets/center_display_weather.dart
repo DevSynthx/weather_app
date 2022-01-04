@@ -64,6 +64,7 @@ class CenterWeatherDisplay extends HookConsumerWidget {
         const String icons = 'assets/images/03-s.png';
         const String mostlyIcon = 'assets/images/06-s.png';
         const String clearIcon = 'assets/images/33-s.png';
+        const String rainIcon = 'assets/images/12-s.png';
         String getIcons() {
           if (data![0].weatherText == "sunny") {
             return iconxx;
@@ -80,6 +81,9 @@ class CenterWeatherDisplay extends HookConsumerWidget {
           }
           if (data[0].weatherText == "Mostly cloudy") {
             return mostlyIcon;
+          }
+          if (data[0].weatherText == "Light rain") {
+            return rainIcon;
           } else {
             return iconx;
           }
