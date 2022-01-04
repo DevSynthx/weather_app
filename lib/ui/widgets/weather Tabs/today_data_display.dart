@@ -35,6 +35,7 @@ class TodayWeatherState extends ConsumerState<TodayWeather>
         const String iconx = 'assets/images/02-s.png';
         const String iconxx = 'assets/images/33-s.png';
         const String icons = 'assets/images/18-s.png';
+        const String rainIcons = 'assets/images/12-s.png';
         return SizedBox(
           height: 400.h,
           width: MediaQuery.of(context).size.width,
@@ -60,6 +61,9 @@ class TodayWeatherState extends ConsumerState<TodayWeather>
                   }
                   if (today.day!.iconPhrase == "Mostly Cloudy") {
                     return icons;
+                  }
+                  if (today.day!.iconPhrase == "Showers") {
+                    return rainIcons;
                   } else {
                     return iconx;
                   }
@@ -80,6 +84,9 @@ class TodayWeatherState extends ConsumerState<TodayWeather>
                   }
                   if (today.night!.iconPhrase == "Mostly Cloudy") {
                     return icons;
+                  }
+                  if (today.night!.iconPhrase == "Showers") {
+                    return rainIcons;
                   } else {
                     return iconx;
                   }
@@ -87,7 +94,7 @@ class TodayWeatherState extends ConsumerState<TodayWeather>
 
                 DateTime date = today.date!;
                 final time = DateFormat.jm().format(date);
-                print(time);
+
                 return Padding(
                   padding: const EdgeInsets.only(
                     top: 10,
@@ -249,24 +256,6 @@ class TodayWeatherState extends ConsumerState<TodayWeather>
                                       ),
                                     ],
                                   ),
-                                  // Row(
-                                  //   children: [
-                                  //     Text(
-                                  //       'Temperature:',
-                                  //       style: TextStyle(
-                                  //           fontSize: 15.sp,
-                                  //           color: Colors.white),
-                                  //     ),
-                                  //     Gap(10.w),
-                                  //     Text(
-                                  //       today.temperature!.minimum!.value
-                                  //           .toString(),
-                                  //       style: TextStyle(
-                                  //           fontSize: 15.sp,
-                                  //           color: Colors.white),
-                                  //     ),
-                                  //   ],
-                                  // ),
                                 ],
                               ),
                             ],

@@ -6,6 +6,7 @@ import 'package:weather_app/core/model/hourly_weather_data.dart';
 import 'package:weather_app/core/model/one_day_weather.dart';
 import 'package:weather_app/core/model/user_location_weather.dart';
 import 'package:weather_app/core/model/weather_by_current_location.dart';
+import 'package:weather_app/core/model/weather_by_location.dart';
 import 'package:weather_app/core/repository/i_current_weather_repo.dart';
 import 'package:weather_app/core/services/weather_service.dart';
 
@@ -46,6 +47,18 @@ class WeatherRepository extends ICurrentWeatherRepo {
   Future<OneDayWeather> oneDayData() async {
     final oneDay = await _weatherService.oneDayData();
     return oneDay;
+  }
+
+  @override
+  Future<List<WeatherByLocation>> weatherByLocation(String cityName) async {
+    final weatherlocation = await _weatherService.weatherByLocation(cityName);
+    return weatherlocation;
+  }
+
+  @override
+  Future<List<CurrentWeatherData>> searchLocationWeather() async {
+    final searchWeather = await _weatherService.searchLocationWeather();
+    return searchWeather;
   }
 
   // @override

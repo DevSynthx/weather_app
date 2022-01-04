@@ -20,36 +20,23 @@ class TopHeader extends HookConsumerWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // AnimSearchBar(
-        //   textController: searchController,
-        //   width: 250.2,
-        //   helpText: "Search...",
-        //   style: const TextStyle(color: Colors.white),
-        //   color: const Color(0xffffffff).withOpacity(0.10),
-        //   closeSearchOnSuffixTap: true,
-        //   closeSearchOnPrefixTap: true,
-        //   autoFocus: true,
-        //   onChange: (value) {
-        //     // Debounce.seconds(
-        //     //     2,
-        //     //     () => ref
-        //     //         .read(currentWeatherProvider.notifier)
-        //     //         .getWeather(value));
-        //   },
-        // ),
-        InkWell(
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (context) => Container(
-                  height: 500,
-                ),
-              );
-            },
-            child: const Icon(
-              Icons.search,
-              color: Colors.white,
-            )),
+        AnimSearchBar(
+          textController: searchController,
+          width: 280.2,
+          helpText: "Search...",
+          style: const TextStyle(color: Colors.white),
+          color: const Color(0xffffffff).withOpacity(0.10),
+          closeSearchOnSuffixTap: true,
+          closeSearchOnPrefixTap: true,
+          autoFocus: true,
+          onChange: (value) {
+            // Debounce.seconds(
+            //     2,
+            //     () => ref
+            //         .read(currentWeatherProvider.notifier)
+            //         .getWeather(value));
+          },
+        ),
         const Spacer(),
         Container(
           height: 50.h,

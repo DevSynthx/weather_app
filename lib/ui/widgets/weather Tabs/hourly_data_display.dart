@@ -67,7 +67,7 @@ class HourlyWeatherState extends ConsumerState<HourlyWeather>
 
                 DateTime date = hourly.dateTime!;
                 final time = DateFormat.jm().format(date);
-                print(time);
+
                 return Padding(
                   padding: const EdgeInsets.only(
                     top: 10,
