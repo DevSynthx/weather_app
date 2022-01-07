@@ -1,7 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:weather_app/ui/widgets/search_screen.dart';
-
+import 'package:weather_app/ui/screen/search_screen.dart';
 import 'floating search/src/floating_search_bar.dart';
 import 'floating search/src/floating_search_bar_actions.dart';
 import 'floating search/src/floating_search_bar_transition.dart';
@@ -26,7 +27,8 @@ class SearchBar extends HookConsumerWidget {
           return print("empty");
         } else {
           showModalBottomSheet(
-              backgroundColor: const Color(0xff8862FC),
+              backgroundColor: Colors.transparent,
+              // backgroundColor: const Color(0xff8862FC),
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(30.0),
@@ -34,8 +36,11 @@ class SearchBar extends HookConsumerWidget {
               ),
               context: context,
               builder: (context) {
-                return SearchPage(
-                  cityName: query,
+                return BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                  child: SearchPage(
+                    cityName: query,
+                  ),
                 );
               });
         }

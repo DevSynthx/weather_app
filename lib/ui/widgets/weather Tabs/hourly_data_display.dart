@@ -5,6 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_app/vm/hourly_weather_data_vm.dart';
 
+import '../loading_progress.dart';
+
 class HourlyWeather extends ConsumerStatefulWidget {
   const HourlyWeather({Key? key}) : super(key: key);
 
@@ -20,12 +22,8 @@ class HourlyWeatherState extends ConsumerState<HourlyWeather>
     final vm = ref.watch(hourlyDataProvider);
 
     return vm.when(
-      idle: () {
-        return const Center(child: Text('Loading loaction'));
-      },
-      loading: () {
-        return const Center(child: Text('Loading loaction'));
-      },
+      idle: () => const LoadingProgress(),
+      loading: () => const LoadingProgress(),
       error: (Object error, StackTrace stackTrace) {
         return Center(child: Text(error.toString()));
       },
@@ -98,7 +96,7 @@ class HourlyWeatherState extends ConsumerState<HourlyWeather>
                     width: 100,
                     height: 50,
                     borderRadius: 10,
-                    blur: 5,
+                    blur: 15,
                     border: 0,
                     linearGradient: LinearGradient(
                         begin: Alignment.topLeft,

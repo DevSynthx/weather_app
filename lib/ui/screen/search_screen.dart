@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:glassmorphism/glassmorphism.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:weather_app/core/global/constant.dart';
 import 'package:weather_app/core/storage/share_pref.dart';
@@ -18,7 +19,31 @@ class SearchPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final vm = ref.watch(weatherByLocationProvider(cityName));
 
-    return SizedBox(
+    return GlassmorphicContainer(
+      width: MediaQuery.of(context).size.width,
+      height: 400,
+      borderRadius: 20,
+      blur: 5,
+      border: 0,
+      linearGradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            const Color(0xFFffffff).withOpacity(0.1),
+            const Color(0xFFFFFFFF).withOpacity(0.05),
+          ],
+          stops: const [
+            0.1,
+            1,
+          ]),
+      borderGradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          const Color(0xFFffffff).withOpacity(0.5),
+          const Color((0xFFFFFFFF)).withOpacity(0.5),
+        ],
+      ),
       child: Column(
         children: [
           vm.when(
@@ -31,10 +56,19 @@ class SearchPage extends HookConsumerWidget {
               );
             },
             error: (Object error, StackTrace? stackTrace) {
-              return Text(error.toString());
+              return Padding(
+                padding: const EdgeInsets.only(top: 90),
+                child: Text(
+                  error.toString(),
+                  style: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w600),
+                ),
+              );
             },
             data: (data) {
               StorageUtil.setString(Constant.searchKey, data[0].key);
+
+              // return Text('im here');
 
               return Padding(
                 padding: EdgeInsets.only(left: 23.w, right: 23.w),
@@ -268,3 +302,97 @@ class WeatherBuild extends HookConsumerWidget {
     );
   }
 }
+
+
+//  GlassmorphicContainer(
+//                         child: Center(
+//                           child: Row(
+//                             children: [
+//                               // Text(
+//                               //   time,
+//                               //   style:
+//                               //       TextStyle(fontSize: 15.sp, color: Colors.white),
+//                               // ),
+//                               SizedBox(
+//                                 height: 130,
+//                                 width: 130,
+//                                 child: Image.asset(
+//                                   getNightIcons(),
+//                                   // width: 100,
+//                                   // height: 100,
+//                                   fit: BoxFit.contain,
+//                                 ),
+//                               ),
+//                               Column(
+//                                 crossAxisAlignment: CrossAxisAlignment.start,
+//                                 children: [
+//                                   Gap(20.h),
+//                                   Text(
+//                                     today.night!.iconPhrase.toString(),
+//                                     style: TextStyle(
+//                                         fontSize: 23.sp, color: Colors.white),
+//                                   ),
+//                                   Row(
+//                                     children: [
+//                                       Text(
+//                                         'Rain probability:',
+//                                         style: TextStyle(
+//                                             fontSize: 15.sp,
+//                                             color: Colors.white),
+//                                       ),
+//                                       Gap(10.w),
+//                                       Text(
+//                                         today.night!.rainProbability.toString(),
+//                                         style: TextStyle(
+//                                             fontSize: 15.sp,
+//                                             color: Colors.white),
+//                                       ),
+//                                     ],
+//                                   ),
+//                                   Row(
+//                                     children: [
+//                                       Text(
+//                                         'Cloud cover:',
+//                                         style: TextStyle(
+//                                             fontSize: 15.sp,
+//                                             color: Colors.white),
+//                                       ),
+//                                       Gap(10.w),
+//                                       Text(
+//                                         today.day!.cloudCover.toString(),
+//                                         style: TextStyle(
+//                                             fontSize: 15.sp,
+//                                             color: Colors.white),
+//                                       ),
+//                                     ],
+//                                   ),
+//                                 ],
+//                               ),
+//                             ],
+//                           ),
+//                         ),
+//                         width: MediaQuery.of(context).size.width,
+//                         height: 100,
+//                         borderRadius: 10,
+//                         blur: 15,
+//                         border: 0,
+//                         linearGradient: LinearGradient(
+//                             begin: Alignment.topLeft,
+//                             end: Alignment.bottomRight,
+//                             colors: [
+//                               const Color(0xFFffffff).withOpacity(0.1),
+//                               const Color(0xFFFFFFFF).withOpacity(0.05),
+//                             ],
+//                             stops: const [
+//                               0.1,
+//                               1,
+//                             ]),
+//                         borderGradient: LinearGradient(
+//                           begin: Alignment.topLeft,
+//                           end: Alignment.bottomRight,
+//                           colors: [
+//                             const Color(0xFFffffff).withOpacity(0.5),
+//                             const Color((0xFFFFFFFF)).withOpacity(0.5),
+//                           ],
+//                         ),
+//                       ),

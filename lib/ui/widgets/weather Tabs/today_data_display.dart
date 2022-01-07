@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:weather_app/vm/hourly_weather_data_vm.dart';
 import 'package:weather_app/vm/today_data.dart';
 
+import '../loading_progress.dart';
+
 class TodayWeather extends ConsumerStatefulWidget {
   const TodayWeather({Key? key}) : super(key: key);
 
@@ -22,12 +24,8 @@ class TodayWeatherState extends ConsumerState<TodayWeather>
     final vm = ref.watch(todayWeatherProvider);
 
     return vm.when(
-      idle: () {
-        return const Center(child: Text('Loading loaction'));
-      },
-      loading: () {
-        return const Center(child: Text('Loading loaction'));
-      },
+      idle: () => const LoadingProgress(),
+      loading: () => const LoadingProgress(),
       error: (Object error, StackTrace stackTrace) {
         return Center(child: Text(error.toString()));
       },
@@ -105,11 +103,6 @@ class TodayWeatherState extends ConsumerState<TodayWeather>
                         child: Center(
                           child: Row(
                             children: [
-                              // Text(
-                              //   time,
-                              //   style:
-                              //       TextStyle(fontSize: 15.sp, color: Colors.white),
-                              // ),
                               SizedBox(
                                 height: 130,
                                 width: 130,
@@ -264,7 +257,7 @@ class TodayWeatherState extends ConsumerState<TodayWeather>
                         width: MediaQuery.of(context).size.width,
                         height: 100,
                         borderRadius: 10,
-                        blur: 5,
+                        blur: 15,
                         border: 0,
                         linearGradient: LinearGradient(
                             begin: Alignment.topLeft,
