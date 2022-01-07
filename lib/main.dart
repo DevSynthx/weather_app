@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
               navigatorKey: navigator.key,
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
-                scaffoldBackgroundColor: const Color(0xff8862FC),
+                // scaffoldBackgroundColor: const Color(0xff8862FC),
                 fontFamily: 'DM Sans',
                 textTheme: GoogleFonts.dmSansTextTheme(
                   Theme.of(context).textTheme,

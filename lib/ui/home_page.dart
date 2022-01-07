@@ -4,8 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:weather_app/ui/widgets/weather_tab.dart';
+import 'widgets/background_view.dart';
 import 'widgets/center_display_weather.dart';
 import 'widgets/floating_search.dart';
+import 'widgets/greeting_text.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -24,10 +26,8 @@ class HomePage extends HookConsumerWidget {
       resizeToAvoidBottomInset: false,
       body: Container(
         constraints: const BoxConstraints.expand(),
-        // decoration: const BoxDecoration(
-        //     image: DecorationImage(
-        //         image: AssetImage('assets/images/nightfall.png'),
-        //         fit: BoxFit.fill)),
+        decoration: BoxDecoration(
+            image: DecorationImage(image: AssetImage(bg()), fit: BoxFit.fill)),
         child: Padding(
           padding: EdgeInsets.only(left: 35.w, right: 35.w),
           child: Stack(
@@ -55,43 +55,6 @@ class HomePage extends HookConsumerWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class GreetingText extends StatelessWidget {
-  const GreetingText({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    String greetingMessage() {
-      var timeNow = DateTime.now().hour;
-      print(timeNow);
-
-      if (timeNow <= 4) {
-        print(timeNow);
-        return 'Good morning sir 🤨 \nwhy are you awake';
-      } else if ((timeNow >= 5) && (timeNow <= 12)) {
-        print(timeNow);
-        return 'Good Morning David 😊';
-      } else if ((timeNow > 12) && (timeNow <= 16)) {
-        return 'Good Afternoon, David 😌';
-      } else if ((timeNow > 16) && (timeNow < 23)) {
-        return 'Good Evening 🙂';
-      } else {
-        return 'Good evening 🤨 \nwhy are you awake';
-      }
-    }
-
-    return Padding(
-      padding: const EdgeInsets.only(right: 80),
-      child: Text(
-        greetingMessage(),
-        style: TextStyle(
-            fontSize: 23.sp, fontWeight: FontWeight.w500, color: Colors.white),
       ),
     );
   }

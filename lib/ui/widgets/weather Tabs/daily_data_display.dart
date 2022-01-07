@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glassmorphism/glassmorphism.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:weather_app/ui/widgets/loading_progress.dart';
 import 'package:weather_app/vm/daily_weather_data.dart';
 
 class DailyWeather extends ConsumerStatefulWidget {
@@ -20,12 +21,8 @@ class DailyWeatherState extends ConsumerState<DailyWeather>
     final vm = ref.watch(dailyDataProvider);
 
     return vm.when(
-      idle: () {
-        return const Center(child: Text('Loading loaction'));
-      },
-      loading: () {
-        return const Center(child: Text('Loading loaction'));
-      },
+      idle: () => const LoadingProgress(),
+      loading: () => const LoadingProgress(),
       error: (Object error, StackTrace stackTrace) {
         return Center(child: Text(error.toString()));
       },
@@ -90,7 +87,7 @@ class DailyWeatherState extends ConsumerState<DailyWeather>
                     width: 100,
                     height: 50,
                     borderRadius: 10,
-                    blur: 5,
+                    blur: 15,
                     border: 0,
                     linearGradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -107,8 +104,8 @@ class DailyWeatherState extends ConsumerState<DailyWeather>
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Color(0xFFffffff).withOpacity(0.5),
-                        Color((0xFFFFFFFF)).withOpacity(0.5),
+                        const Color(0xFFffffff).withOpacity(0.5),
+                        const Color((0xFFFFFFFF)).withOpacity(0.5),
                       ],
                     ),
                   ),

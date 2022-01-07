@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,6 +22,11 @@ final dioProvider = Provider((ref) => Dio(BaseOptions(
     receiveTimeout: 100000,
     connectTimeout: 100000,
     baseUrl: Constant.baseUrl)));
+
+class CustomException implements Exception {
+  String cause;
+  CustomException(this.cause);
+}
 
 class WeatherService {
   final Dio _dio;
@@ -160,7 +166,12 @@ class WeatherService {
       );
       final res = List<WeatherByLocation>.from(
           response.data.map((x) => WeatherByLocation.fromJson(x)));
-      return res;
+
+      if (res.isEmpty) {
+        throw 'City not found, please search for another city';
+      } else {
+        return res;
+      }
     } on DioError catch (e) {
       if (e.response != null && e.response!.data != '') {
         ErrorData result = ErrorData.fromJson(e.response!.data);
