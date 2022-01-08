@@ -7,22 +7,19 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_app/ui/widgets/device_location.dart';
+import 'package:weather_app/ui/widgets/toggle_state.dart';
 import 'package:weather_app/vm/current_weather_data.dart';
 import 'package:weather_app/vm/current_weather_vm.dart';
 
 class CenterWeatherDisplay extends HookConsumerWidget {
-  CenterWeatherDisplay({
+  const CenterWeatherDisplay({
     Key? key,
   }) : super(key: key);
-
-  final toggleStateProvider = StateProvider<bool>((ref) {
-    return true;
-  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vm = ref.watch(currentWeatherDataProvider);
-    final toggle = ref.watch(toggleStateProvider);
+    final toggle = ref.watch(toggleStateProvider.state);
     final store = useState('');
 
     // format date
@@ -92,14 +89,23 @@ class CenterWeatherDisplay extends HookConsumerWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              '${data![0].temperature!.imperial!.value!.toInt()}\u00B0',
-              style: TextStyle(
-                fontSize: 100.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-            ),
+            toggle.state == false
+                ? Text(
+                    '${data![0].temperature!.metric!.value!.toInt()}\u00B0',
+                    style: TextStyle(
+                      fontSize: 100.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  )
+                : Text(
+                    '${data![0].temperature!.imperial!.value!.toInt()}\u00B0',
+                    style: TextStyle(
+                      fontSize: 100.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
             Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,

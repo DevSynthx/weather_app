@@ -26,7 +26,7 @@ class HttpUtils {
   static Future<DioError> buildErrorResponse(DioError err) async {
     switch (err.type) {
       case DioErrorType.connectTimeout:
-        if (await ConnectionUtils.getActiveStatus()) {
+        if (await ConnectionUtil.getActiveStatus()) {
           err.error = HttpErrorStrings.CONNECTION_TIMEOUT_ACTIVE;
         } else {
           err.error = HttpErrorStrings.CONNECTION_TIMEOUT_NOT_ACTIVE;
