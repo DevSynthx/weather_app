@@ -5,6 +5,8 @@ import 'package:glassmorphism/glassmorphism.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:weather_app/core/global/constant.dart';
 import 'package:weather_app/core/storage/share_pref.dart';
+import 'package:weather_app/ui/screen/maps.dart';
+import 'package:weather_app/utils/navigator.dart';
 import 'package:weather_app/vm/search_location_vm.dart';
 import 'package:weather_app/vm/weather_by_location_vm.dart';
 
@@ -58,10 +60,12 @@ class SearchPage extends HookConsumerWidget {
             error: (Object error, StackTrace? stackTrace) {
               return Padding(
                 padding: const EdgeInsets.only(top: 90),
-                child: Text(
-                  error.toString(),
-                  style: const TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w600),
+                child: Center(
+                  child: Text(
+                    error.toString(),
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w600),
+                  ),
                 ),
               );
             },
@@ -75,26 +79,36 @@ class SearchPage extends HookConsumerWidget {
                 child: Column(
                   children: [
                     Gap(40.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.location_on_outlined,
-                          color: Colors.grey[100],
-                        ),
-                        Gap(10.w),
-                        Text(
-                          '${data[0].localizedName.toString()},',
-                          style: TextStyle(
-                              color: Colors.grey[100], fontSize: 20.sp),
-                        ),
-                        Gap(8.w),
-                        Text(
-                          data[0].administrativeArea!.localizedName.toString(),
-                          style: TextStyle(
-                              color: Colors.grey[100], fontSize: 20.sp),
-                        ),
-                      ],
+                    InkWell(
+                      onTap: () {
+                        context.navigate(ViewMap(
+                            latitude: data[0].geoPosition!.latitude!,
+                            longitude: data[0].geoPosition!.longitude!));
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.location_on_outlined,
+                            color: Colors.grey[100],
+                          ),
+                          Gap(10.w),
+                          Text(
+                            '${data[0].localizedName.toString()},',
+                            style: TextStyle(
+                                color: Colors.grey[100], fontSize: 20.sp),
+                          ),
+                          Gap(8.w),
+                          Text(
+                            data[0]
+                                .administrativeArea!
+                                .localizedName
+                                .toString(),
+                            style: TextStyle(
+                                color: Colors.grey[100], fontSize: 20.sp),
+                          ),
+                        ],
+                      ),
                     ),
                     const WeatherBuild()
                   ],

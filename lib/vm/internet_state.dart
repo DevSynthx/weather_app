@@ -1,21 +1,20 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:weather_app/ui/widgets/snackBar/snack_bar.dart';
 
-class Internet extends StateNotifier<bool> {
-  Internet() : super(true);
+class ConnectionUtils {
+  static getActiveStatus(BuildContext context) async {
+    final internet =
+        InternetConnectionChecker().onStatusChange.listen((status) {
+      if (status == InternetConnectionStatus.connected) {
+        return AppSnackBar.showSuccessSnackBar(context,
+            message: 'is connected');
+      } else {
+        return AppSnackBar.showSuccessSnackBar(context,
+            message: 'is disconnected');
+      }
+    });
 
-  final internet = InternetConnectionChecker().onStatusChange.listen((status) {
-    if (status == InternetConnectionStatus.connected) {
-      print('is connected');
-    } else {
-      InternetConnectionStatus.disconnected;
-      print('disconnected');
-    }
-  });
+    await internet.cancel();
+  }
 }
-
-final internetStateProvider = StateProvider((ref) => Internet());
-
-final internetProvider = StateProvider<Internet>((ref) {
-  return Internet();
-});

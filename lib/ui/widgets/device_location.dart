@@ -48,30 +48,30 @@ class DeviceLocation extends HookConsumerWidget {
         // print(data!.name.toString());
         // final location = StorageUtil.getString(Constant.locationKey);
         // print(location);
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            InkWell(
-              onTap: () => context.navigate(ViewMap(
-                latitude: data.geoPosition!.latitude!,
-                longitude: data.geoPosition!.longitude!,
-              )),
-              child: Icon(
+        return InkWell(
+          onTap: () => context.navigate(ViewMap(
+            latitude: data.geoPosition!.latitude!,
+            longitude: data.geoPosition!.longitude!,
+          )),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
                 Icons.location_on_outlined,
                 color: Colors.grey[100],
               ),
-            ),
-            Gap(10.w),
-            Text(
-              data.localizedName.toString(),
-              style: TextStyle(color: Colors.grey[100], fontSize: 20.sp),
-            ),
-            Gap(10.w),
-            Text(
-              data.country!.englishName.toString(),
-              style: TextStyle(color: Colors.grey[100], fontSize: 20.sp),
-            ),
-          ],
+              Gap(10.w),
+              Text(
+                data.localizedName.toString(),
+                style: TextStyle(color: Colors.grey[100], fontSize: 20.sp),
+              ),
+              Gap(10.w),
+              Text(
+                data.country!.englishName.toString(),
+                style: TextStyle(color: Colors.grey[100], fontSize: 20.sp),
+              ),
+            ],
+          ),
         );
       },
     );

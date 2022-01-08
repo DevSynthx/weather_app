@@ -24,7 +24,7 @@ class SearchBar extends HookConsumerWidget {
 
       onSubmitted: (query) {
         if (query.isEmpty) {
-          return print("empty");
+          return;
         } else {
           showModalBottomSheet(
               backgroundColor: Colors.transparent,
