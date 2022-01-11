@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:weather_app/core/connection/connection.dart';
 import 'package:weather_app/core/storage/share_pref.dart';
 import 'package:weather_app/ui/widgets/toggle_state.dart';
@@ -15,6 +16,9 @@ class GreetingText extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final toggle = ref.watch(toggleStateProvider.state);
+    var dateTimer = DateTime.now();
+    String formatted = DateFormat(' d, MMM yyyy').format(dateTimer);
+
     // useEffect(() {
     //   ConnectionUtils.getActiveStatus(context);
     // });
@@ -37,11 +41,11 @@ class GreetingText extends HookConsumerWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(right: 0),
+      padding: const EdgeInsets.only(left: 10),
       child: Row(
         children: [
           Text(
-            greetingMessage(),
+            formatted,
             style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.w500,

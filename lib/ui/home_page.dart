@@ -53,7 +53,7 @@ class HomePage extends HookConsumerWidget {
                         Gap(40.h),
                         const GreetingText(),
                         Gap(40.h),
-                        CenterWeatherDisplay(),
+                        const CenterWeatherDisplay(),
                         Gap(30.h),
                         const WeatherTab()
                       ],
