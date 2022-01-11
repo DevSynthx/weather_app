@@ -34,6 +34,7 @@ class TodayWeatherState extends ConsumerState<TodayWeather>
         const String iconxx = 'assets/images/33-s.png';
         const String icons = 'assets/images/18-s.png';
         const String rainIcons = 'assets/images/12-s.png';
+        const String intermitIcons = 'assets/images/04-s.png';
         return SizedBox(
           height: 400.h,
           width: MediaQuery.of(context).size.width,
@@ -51,13 +52,13 @@ class TodayWeatherState extends ConsumerState<TodayWeather>
                   if (today.day!.iconPhrase == "Mostly clear") {
                     return iconxx;
                   }
-                  if (today.day!.iconPhrase == "Partly Sunny") {
+                  if (today.day!.iconPhrase == "Partly sunny") {
                     return icons;
                   }
-                  if (today.day!.iconPhrase == "Intermittent Clouds") {
-                    return icons;
+                  if (today.day!.iconPhrase == "Intermittent clouds") {
+                    return intermitIcons;
                   }
-                  if (today.day!.iconPhrase == "Mostly Cloudy") {
+                  if (today.day!.iconPhrase == "Mostly cloudy") {
                     return icons;
                   }
                   if (today.day!.iconPhrase == "Showers") {
@@ -77,10 +78,10 @@ class TodayWeatherState extends ConsumerState<TodayWeather>
                   if (today.night!.iconPhrase == "Partly Sunny") {
                     return icons;
                   }
-                  if (today.night!.iconPhrase == "Intermittent Clouds") {
-                    return icons;
+                  if (today.night!.iconPhrase == "Intermittent clouds") {
+                    return intermitIcons;
                   }
-                  if (today.night!.iconPhrase == "Mostly Cloudy") {
+                  if (today.night!.iconPhrase == "Mostly cloudy") {
                     return icons;
                   }
                   if (today.night!.iconPhrase == "Showers") {
