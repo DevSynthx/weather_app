@@ -5,7 +5,7 @@ String bg() {
   if (timeNow == 6) {
     return 'assets/images/sunrise.jpg';
   } else if ((timeNow > 6) && (timeNow <= 17)) {
-    return 'assets/images/evening.jpg';
+    return 'assets/images/daylight.jpg';
   } else if ((timeNow > 17) && (timeNow < 18)) {
     return 'assets/images/evening.jpg';
   } else {
